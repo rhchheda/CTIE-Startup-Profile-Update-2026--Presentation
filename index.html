@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>CTIE Startup Profile Update — System Overview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Spline+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0C2D6B;
+    --navy-deep: #081f4a;
+    --gold: #C8960C;
+    --gold-soft: #E0AD24;
+    --paper: #FBFAF7;
+    --ink: #1A1F2E;
+    --muted: #5C6478;
+    --line: #E4E6EC;
+    --card: #FFFFFF;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { 
+    scroll-behavior: smooth; 
+    overflow-x: hidden;
+  }
+  body {
+    font-family: 'Spline Sans', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  .deck { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+  .slide {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .slide:last-child { border-bottom: none; }
+
+  .slide-tag {
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .slide-tag::before {
+    content: '';
+    width: 28px;
+    height: 2px;
+    background: var(--gold);
+  }
+
+  h1, h2, h3 { font-family: 'Fraunces', serif; line-height: 1.15; font-weight: 600; }
+
+  /* Cover */
+  .cover {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-deep) 100%);
+    color: #fff;
+    margin: 0 -9999px;
+    padding-left: 9999px;
+    padding-right: 9999px;
+  }
+  .cover-inner { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+  .cover .badge {
+    display: inline-block;
+    color: var(--gold-soft);
+    font-size: 13px;
+    letter-spacing: 4px;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+    padding: 8px 0;
+    border-bottom: 2px solid var(--gold);
+  }
+  .cover h1 {
+    font-size: clamp(40px, 6vw, 68px);
+    color: #fff;
+    font-weight: 600;
+    letter-spacing: -1px;
+    margin-bottom: 20px;
+  }
+  .cover h1 em { color: var(--gold-soft); font-style: italic; }
+  .cover .sub {
+    font-size: 19px;
+    color: rgba(255,255,255,0.75);
+    max-width: 620px;
+    margin-bottom: 48px;
+  }
+  .cover-meta {
+    display: flex;
+    gap: 48px;
+    flex-wrap: wrap;
+    padding-top: 32px;
+    border-top: 1px solid rgba(255,255,255,0.15);
+  }
+  .cover-meta .label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 4px;
+  }
+  .cover-meta .value { font-size: 16px; color: #fff; font-weight: 500; }
+
+  .slide h2 {
+    font-size: clamp(30px, 4vw, 44px);
+    color: var(--navy);
+    margin-bottom: 16px;
+  }
+  .lead {
+    font-size: 18px;
+    color: var(--muted);
+    max-width: 680px;
+    margin-bottom: 44px;
+  }
+
+  /* Stats */
+  .stat-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .stat {
+    background: var(--card);
+    padding: 28px 24px;
+  }
+  .stat .num {
+    font-family: 'Fraunces', serif;
+    font-size: 44px;
+    font-weight: 600;
+    color: var(--navy);
+  }
+  .stat .num.gold { color: var(--gold); }
+  .stat .cap {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 8px;
+  }
+  @media (max-width: 760px) {
+    .stat-strip { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* Pipeline */
+  .pipeline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .stage {
+    flex: 1;
+    min-width: 160px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 22px 20px;
+    position: relative;
+  }
+  .stage .step {
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .stage .title { font-weight: 600; font-size: 15px; color: var(--navy); margin-bottom: 6px; }
+  .stage .desc { font-size: 13px; color: var(--muted); }
+
+  /* Features */
+  .feat-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+  }
+  @media (max-width: 760px) { .feat-grid { grid-template-columns: 1fr; } }
+  .feat {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 26px;
+  }
+  .feat .ico {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--navy), #1a3d8f);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--gold-soft);
+    font-size: 22px;
+    margin-bottom: 16px;
+  }
+  .feat h3 { font-size: 19px; color: var(--navy); margin-bottom: 8px; }
+  .feat p { font-size: 14px; color: var(--muted); }
+
+  /* Stack */
+  .stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 8px;
+  }
+  .chip {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 8px 18px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--navy);
+  }
+  .chip span { color: var(--muted); font-weight: 400; }
+
+  /* Flags */
+  .flag {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-left: 4px solid #C77D0A;
+    border-radius: 10px;
+    padding: 24px 26px;
+    margin-bottom: 16px;
+  }
+  .flag.red { border-left-color: #C0392B; }
+  .flag.gold { border-left-color: var(--gold); }
+  .flag .flag-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .flag h3 { font-size: 16px; font-weight: 600; }
+  .flag p { font-size: 14.5px; color: var(--muted); }
+  .flag .nums {
+    display: flex;
+    gap: 14px;
+    margin: 14px 0 4px;
+    flex-wrap: wrap;
+  }
+  .flag .nbox {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 10px 18px;
+    text-align: center;
+  }
+  .flag .nbox .n { font-family: 'Fraunces', serif; font-size: 26px; font-weight: 600; color: var(--navy); }
+  .flag .nbox .l { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  /* Timeline */
+  .timeline { border-left: 2px solid var(--line); margin-left: 8px; }
+  .tl-item { position: relative; padding: 0 0 28px 32px; }
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -7px; top: 4px;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--gold);
+    border: 2px solid var(--paper);
+  }
+  .tl-item:last-child { padding-bottom: 0; }
+  .tl-date { font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: var(--gold); font-weight: 600; margin-bottom: 4px; }
+  .tl-item h3 { font-size: 16px; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
+  .tl-item p { font-size: 14px; color: var(--muted); }
+
+  /* ============ CLOSING SECTION - FULLY WORKING ============ */
+  .closing-section {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-deep) 100%);
+    margin: 0 -9999px;
+    padding: 80px 9999px;
+    text-align: center;
+  }
+  .closing-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+  .closing-container .slide-tag {
+    justify-content: center;
+    color: var(--gold-soft);
+    margin-bottom: 24px;
+  }
+  .closing-container .slide-tag::before {
+    background: var(--gold-soft);
+  }
+  .closing-container h2 {
+    color: #fff;
+    font-size: clamp(32px, 4.5vw, 48px);
+    margin-bottom: 20px;
+  }
+  .closing-lead {
+    color: rgba(255,255,255,0.85);
+    font-size: 17px;
+    line-height: 1.6;
+    max-width: 680px;
+    margin: 0 auto 48px auto;
+  }
+  
+  /* KPI Cards */
+  .kpi-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 24px;
+    margin: 40px auto 48px auto;
+  }
+  .kpi-card {
+    flex: 1;
+    min-width: 200px;
+    max-width: 240px;
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(12px);
+    border-radius: 24px;
+    padding: 28px 16px;
+    border: 1px solid rgba(255,215,0,0.2);
+    transition: all 0.3s ease;
+  }
+  @media (max-width: 900px) {
+    .kpi-card { min-width: 220px; }
+  }
+  @media (max-width: 680px) {
+    .kpi-card { min-width: 260px; }
+  }
+  @media (max-width: 560px) {
+    .kpi-card { min-width: 100%; max-width: 100%; }
+  }
+  .kpi-card:hover {
+    transform: translateY(-8px);
+    background: rgba(255,255,255,0.12);
+    border-color: rgba(224,173,36,0.5);
+  }
+  .kpi-icon {
+    font-size: 44px;
+    margin-bottom: 16px;
+    display: inline-block;
+  }
+  .kpi-number {
+    font-family: 'Fraunces', serif;
+    font-size: 52px;
+    font-weight: 700;
+    color: var(--gold-soft);
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+  .kpi-label {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.8);
+    margin-bottom: 12px;
+  }
+  .kpi-desc {
+    font-size: 12px;
+    color: rgba(255,255,255,0.55);
+  }
+  .closing-signature {
+    margin-top: 48px;
+    padding-top: 32px;
+    border-top: 1px solid rgba(255,255,255,0.15);
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 18px;
+    color: var(--gold-soft);
+  }
+  .closing-quote {
+    font-size: 13px;
+    color: rgba(255,255,255,0.45);
+    margin-top: 16px;
+  }
+
+  .deck-footer {
+    text-align: center;
+    padding: 28px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* Animations */
+  .slide > * { animation: fadeUp 0.6s ease both; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Toast */
+  .toast-msg {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--navy);
+    color: var(--gold-soft);
+    padding: 10px 24px;
+    border-radius: 40px;
+    font-size: 13px;
+    font-weight: 500;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    z-index: 10000;
+    opacity: 0;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  @media (max-width: 560px) {
+    .toast-msg { white-space: normal; text-align: center; max-width: 85%; font-size: 12px; padding: 8px 18px; }
+  }
+  .toast-msg.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<div id="protectionToast" class="toast-msg"></div>
+
+<!-- COVER -->
+<section class="slide cover">
+  <div class="cover-inner">
+    <span class="badge">KLE-CTIE · System Build Report</span>
+    <h1>CTIE Startup Profile<br>Update <em>— 2026</em></h1>
+    <p class="sub">A zero-cost, Google Workspace–native system for collecting, tracking, and reviewing incubated startup profiles — from invitation to dashboard.</p>
+    <div class="cover-meta">
+      <div><div class="label">Built by</div><div class="value">Rakesh H. Chheda · EE Lab</div></div>
+      <div><div class="label">Platform</div><div class="value">Apps Script · Sheets · Forms</div></div>
+      <div><div class="label">Cost</div><div class="value">₹0 — fully native</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- AT A GLANCE -->
+<section class="slide">
+  <div class="deck">
+    <div class="slide-tag">At a Glance</div>
+    <h2>What was built</h2>
+    <p class="lead">An end-to-end pipeline that turns a flat spreadsheet of startups into a tracked, branded, self-updating data-collection system — with no paid tools and no external dependencies.</p>
+    <div class="stat-strip">
+      <div class="stat"><div class="num">5</div><div class="cap">Integrated modules</div></div>
+      <div class="stat"><div class="num">10</div><div class="cap">Validated form fields</div></div>
+      <div class="stat"><div class="num gold">100%</div><div class="cap">Click-to-submit tracking</div></div>
+      <div class="stat"><div class="num">₹0</div><div class="cap">Recurring cost</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PIPELINE -->
+<section class="slide">
+  <div class="deck">
+    <div class="slide-tag">How It Works</div>
+    <h2>The pipeline</h2>
+    <p class="lead">Each startup receives a personalised, pre-filled form via a tracked link. Every click and submission is logged.</p>
+    <div class="pipeline">
+      <div class="stage"><div class="step">01</div><div class="title">Personalised Invite</div><div class="desc">Branded email with tracked CTA link</div></div>
+      <div class="stage"><div class="step">02</div><div class="title">Tracked Redirect</div><div class="desc">Click logged, forwarded to form</div></div>
+      <div class="stage"><div class="step">03</div><div class="title">Validated Form</div><div class="desc">10 fields with validation rules</div></div>
+      <div class="stage"><div class="step">04</div><div class="title">Auto Response</div><div class="desc">Thank-you email on submit</div></div>
+      <div class="stage"><div class="step">05</div><div class="title">Live Dashboard</div><div class="desc">Funnel, charts, status</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CAPABILITIES -->
+<section class="slide">
+  <div class="deck">
+    <div class="slide-tag">Capabilities</div>
+    <h2>System features</h2>
+    <p class="lead">Consistent branding, custom dialogs, and editable configuration without touching code.</p>
+    <div class="feat-grid">
+      <div class="feat"><div class="ico">✉</div><h3>Editable Sender Config</h3><p>Sender name, subject, CTA label all editable from Config row.</p></div>
+      <div class="feat"><div class="ico">🔗</div><h3>Per-Startup Tracking</h3><p>Unique token per invitation powers invite → click → submit funnel.</p></div>
+      <div class="feat"><div class="ico">✓</div><h3>Field Validation</h3><p>Email, phone, URL validation with auto-casing on submit.</p></div>
+      <div class="feat"><div class="ico">📊</div><h3>Live Dashboard</h3><p>Password-gated dashboard with KPIs, charts, CSV export.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- STACK -->
+<section class="slide">
+  <div class="deck">
+    <div class="slide-tag">Under the Hood</div>
+    <h2>Technical stack</h2>
+    <p class="lead">Everything runs inside Google Workspace. No servers, no subscriptions.</p>
+    <div class="stack">
+      <div class="chip">Google Apps Script <span>· backend</span></div>
+      <div class="chip">Google Forms <span>· data capture</span></div>
+      <div class="chip">Google Sheets <span>· database</span></div>
+      <div class="chip">GmailApp <span>· mailers</span></div>
+      <div class="chip">HtmlService <span>· redirects</span></div>
+      <div class="chip">GitHub Pages <span>· dashboard</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- FLAGS -->
+<section class="slide">
+  <div class="deck">
+    <div class="slide-tag">Key Observations</div>
+    <h2>Flags to reconcile</h2>
+    <p class="lead">Data-integrity items to resolve before next send.</p>
+    <div class="flag">
+      <div class="flag-head"><span>⚠</span><h3>Startup count inconsistency</h3></div>
+      <p>Three different counts: 31 (Nov 2025), 35 (revised list), 39 (current form).</p>
+    </div>
+    <div class="flag red">
+      <div class="flag-head"><span>✕</span><h3>Sasken Technologies — email to verify</h3></div>
+      <p>Email address exists but must be confirmed before sending.</p>
+    </div>
+    <div class="flag gold">
+      <div class="flag-head"><span>↻</span><h3>Prior activity overlap — 27 Nov 2025</h3></div>
+      <p>Align datasets to avoid duplication.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section class="slide">
+  <div class="deck">
+    <div class="slide-tag">Effort Summary</div>
+    <h2>From file to system</h2>
+    <p class="lead">Each obstacle diagnosed and resolved.</p>
+    <div class="timeline">
+      <div class="tl-item"><div class="tl-date">Stage 1</div><h3>Data cleaning & schema design</h3><p>Master + Config + Lists + ClickLog workbook</p></div>
+      <div class="tl-item"><div class="tl-date">Stage 2</div><h3>Form generation & validation</h3><p>10-field form with pre-fill per startup</p></div>
+      <div class="tl-item"><div class="tl-date">Stage 3</div><h3>Tracking, mailers & automation</h3><p>Tracked redirect, branded emails, onFormSubmit</p></div>
+      <div class="tl-item"><div class="tl-date">Stage 4</div><h3>Analytics dashboard</h3><p>Password-gated with live funnel and charts</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CLOSING SECTION - FULLY WORKING & CENTERED ============ -->
+<section class="closing-section">
+  <div class="closing-container">
+    <div class="slide-tag">EXECUTIVE SUMMARY</div>
+    <h2>A reusable, zero-cost<br>foundation</h2>
+    <p class="closing-lead">One spreadsheet, one script, one dashboard — re-runnable every year by changing a single Config row. Built to last beyond any one campaign, and to be handed over cleanly.</p>
+    
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-icon">📊</div>
+        <div class="kpi-number">1</div>
+        <div class="kpi-label">MASTER SPREADSHEET</div>
+        <div class="kpi-desc">Single source of truth for all startup data</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon">⚙️</div>
+        <div class="kpi-number">1</div>
+        <div class="kpi-label">APPS SCRIPT</div>
+        <div class="kpi-desc">Unified backend handling everything</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon">📈</div>
+        <div class="kpi-number">1</div>
+        <div class="kpi-label">DASHBOARD</div>
+        <div class="kpi-desc">Live, password-gated analytics view</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon">🔄</div>
+        <div class="kpi-number">1</div>
+        <div class="kpi-label">CONFIG ROW</div>
+        <div class="kpi-desc">Change once — entire campaign updates</div>
+      </div>
+    </div>
+    
+    <div class="closing-signature">Made with ❤ ~rhc · EE Lab, KLE-CTIE</div>
+    <div class="closing-quote">Handover-ready · Zero vendor lock-in · Enterprise-grade tracking</div>
+  </div>
+</section>
+
+<div class="deck-footer">CTIE Startup Profile Update — 2026 · System Build Report · Confidential to KLE-CTIE</div>
+
+<script>
+  (function() {
+    const toastEl = document.getElementById('protectionToast');
+    function showMessage(msg) {
+      if (!toastEl) return;
+      toastEl.textContent = msg;
+      toastEl.classList.add('show');
+      setTimeout(() => toastEl.classList.remove('show'), 1800);
+    }
+
+    document.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+      showMessage('⛔ Right-click disabled');
+      return false;
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'F12' || e.keyCode === 123) {
+        e.preventDefault();
+        showMessage('🔒 Developer tools restricted');
+        return false;
+      }
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) {
+        e.preventDefault();
+        showMessage('🔒 Developer tools restricted');
+        return false;
+      }
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'u' || e.key === 'U')) {
+        e.preventDefault();
+        showMessage('🔒 View source disabled');
+        return false;
+      }
+      if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S')) {
+        e.preventDefault();
+        showMessage('💾 Saving disabled');
+        return false;
+      }
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'p' || e.key === 'P')) {
+        e.preventDefault();
+        showMessage('🖨️ Printing disabled');
+        return false;
+      }
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'c' || e.key === 'C')) {
+        e.preventDefault();
+        showMessage('📋 Copying disabled');
+        return false;
+      }
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'x' || e.key === 'X')) {
+        e.preventDefault();
+        showMessage('✂️ Cutting disabled');
+        return false;
+      }
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'v' || e.key === 'V')) {
+        e.preventDefault();
+        showMessage('📌 Pasting disabled');
+        return false;
+      }
+    });
+
+    document.addEventListener('copy', function(e) { e.preventDefault(); return false; });
+    document.addEventListener('cut', function(e) { e.preventDefault(); return false; });
+    document.addEventListener('paste', function(e) { e.preventDefault(); return false; });
+    window.addEventListener('dragstart', function(e) { e.preventDefault(); return false; });
+  })();
+</script>
+</body>
+</html>
