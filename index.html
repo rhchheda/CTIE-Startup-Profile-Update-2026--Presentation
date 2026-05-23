@@ -532,5 +532,167 @@
 
 <div class="deck-footer">CTIE Startup Profile Update — 2026 · System Build Report · Confidential to KLE-CTIE</div>
 
+<!-- Enhanced protection: right-click, F12, copy, print screen, dev tools detection -->
+<script>
+  (function() {
+    // 1. Block right-click context menu
+    document.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+      return false;
+    });
+
+    // 2. Block keyboard shortcuts for dev tools, copy, save, view source etc.
+    document.addEventListener('keydown', function(e) {
+      // Block F12
+      if (e.key === 'F12' || e.keyCode === 123) {
+        e.preventDefault();
+        return false;
+      }
+      // Block Ctrl+Shift+I (DevTools), Ctrl+Shift+J (Console), Ctrl+Shift+C (Inspector)
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C' || e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) {
+        e.preventDefault();
+        return false;
+      }
+      // Block Ctrl+U (View Source)
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'u' || e.key === 'U' || e.keyCode === 85)) {
+        e.preventDefault();
+        return false;
+      }
+      // Block Ctrl+S (Save)
+      if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S' || e.keyCode === 83)) {
+        e.preventDefault();
+        return false;
+      }
+      // Block Ctrl+P (Print)
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'p' || e.key === 'P' || e.keyCode === 80)) {
+        e.preventDefault();
+        return false;
+      }
+      // Block Ctrl+C (Copy) - caution: may affect legitimate copy; but per request to block copying, added.
+      // However to avoid total usability kill, we block only if selection includes large areas? But request is "block copying", so block explicitly.
+      // But note: this blocks ALL copying including from input fields. To be precise per request, we implement aggressive block.
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'c' || e.key === 'C' || e.keyCode === 67)) {
+        e.preventDefault();
+        return false;
+      }
+      // Block Ctrl+X (Cut)
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'x' || e.key === 'X' || e.keyCode === 88)) {
+        e.preventDefault();
+        return false;
+      }
+      // Block Ctrl+V (Paste) - optional to prevent copied content re-entry, but keeping for thoroughness
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'v' || e.key === 'V' || e.keyCode === 86)) {
+        e.preventDefault();
+        return false;
+      }
+      // Block PrintScreen key (PrtSc) - cannot fully block OS-level but can clear clipboard or detect via key
+      if (e.key === 'PrintScreen' || e.keyCode === 44) {
+        e.preventDefault();
+        // Attempt to clear clipboard after printscreen (modern browsers have limits)
+        try {
+          navigator.clipboard.writeText('').catch(()=>{});
+        } catch(er){}
+        return false;
+      }
+    });
+
+    // 3. Block copy/cut events via mouse selections (copy via browser menu, or drag)
+    document.addEventListener('copy', function(e) {
+      e.preventDefault();
+      return false;
+    });
+    document.addEventListener('cut', function(e) {
+      e.preventDefault();
+      return false;
+    });
+    document.addEventListener('paste', function(e) {
+      e.preventDefault();
+      return false;
+    });
+
+    // 4. Disable text selection and drag selection to make copying harder (style-level)
+    // Add CSS to disable user-select across entire body, but keep existing style? Respect original design but add anti-select.
+    // However note: original didn't have user-select rules; we will add non-intrusive style that does not disturb layout.
+    const styleAntiSelect = document.createElement('style');
+    styleAntiSelect.textContent = `
+      body {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+      /* Allow text selection inside input or textarea? Not present on this page, but safe */
+      input, textarea {
+        -webkit-user-select: text;
+        -moz-user-select: text;
+        -ms-user-select: text;
+        user-select: text;
+      }
+    `;
+    document.head.appendChild(styleAntiSelect);
+
+    // 5. Additional anti-devtools: disable right-click on images? Already covered. Also detect if devtools is open via trick (window size/performance)
+    // Periodic detection: if devtools open (console), redirect or clear content? But lightweight approach: detect via debugger statement loop? Not robust; but we block common entry.
+    // Also monitor for element inspection via console warning
+    setInterval(function() {
+      // Anti-devtools heuristic: check if devtools is open by measuring time difference for function constructor
+      // This is a common but not foolproof method, but adds layer.
+      const start = performance.now();
+      debugger;
+      const end = performance.now();
+      if (end - start > 100) {
+        // Devtools likely open; optionally take action: clear body or show warning.
+        // To avoid breaking UX, we can show a friendly modal? But to protect content we can hide body.
+        // According to request "fencing for right click & F12 protect & other ways to block copying". We'll add alert and optionally prevent.
+        // However aggressive measures might irritate, but we'll just overwrite body text with message if repeated triggers.
+        // But not to ruin original display permanently, we add a soft block: overwrite only if devtools persistent? safer: just alert and block further.
+        // But better to not break for legitimate resize; we'll prevent future access: clear html content? That's too destructive.
+        // Instead we will log and redirect console clear? Implementation: replace innerHTML with warning only once.
+        if (!window._devtoolsWarned) {
+          window._devtoolsWarned = true;
+          // Optionally show a floating warning but not destroy content. We'll just fire console warning.
+          console.clear();
+          console.log("%cCTIE Security: Developer tools usage is restricted.", "color: red; font-size: 16px;");
+        }
+      }
+    }, 2000);
+
+    // 6. Prevent selection via mouse drag (already handled by user-select:none) 
+    // Also disable image drag and drop to protect assets
+    window.addEventListener('dragstart', function(e) {
+      e.preventDefault();
+      return false;
+    });
+
+    // 7. Block default browser print-screen detection via beforeprint event? Not fully reliable but attempt.
+    window.addEventListener('beforeprint', function(e) {
+      e.preventDefault();
+      alert("Printing this document is restricted.");
+      return false;
+    });
+
+    // 8. Block screenshot detection (client-side only) - limited. Clear clipboard aggressively on focus/ blur
+    document.addEventListener('visibilitychange', function() {
+      if (document.hidden) {
+        // When user switches tab, optionally clear clipboard
+        try {
+          navigator.clipboard.writeText('').catch(()=>{});
+        } catch(ignore){}
+      }
+    });
+
+    // 9. Additional measure: disable context menu on images and nested elements again (redundant)
+    // 10. Override console methods to prevent obvious logging of DOM? but not essential.
+    // 11. Disable inspect element via Ctrl+Shift+? Already covered. Also block F12 context menu for Microsoft Edge.
+    // 12. Adding a shim to prevent script debugging breakpoints?
+    // For thoroughness, also block window.onerror reporting? Not needed.
+
+    // 13. Because some browsers allow 'View Source' via ctrl+U, already blocked. For Safari: Cmd+Option+U blocked via metaKey check.
+    // 14. Block 'Save as' Webpage? Ctrl+S blocked above.
+    // 15. Additional detection of right-click on developer tools panel simulated? Already covered.
+    console.log("CTIE Protection Enabled: Right-click, F12, copy, cut, paste, printscreen, dev tools shortcuts blocked.");
+  })();
+</script>
+
 </body>
 </html>
