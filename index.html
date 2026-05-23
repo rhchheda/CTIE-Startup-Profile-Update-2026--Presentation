@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CTIE Startup Profile Update — System Overview</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,20 +23,17 @@
     --red: #C0392B;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; overflow-x: hidden; }
+  html { scroll-behavior: smooth; }
   body {
     font-family: 'Spline Sans', sans-serif;
     background: var(--paper);
     color: var(--ink);
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
-    width: 100%;
-    position: relative;
   }
 
   /* ============ SLIDE FRAMEWORK ============ */
-  .deck { max-width: 1100px; margin: 0 auto; padding: 0 24px; width: 100%; }
+  .deck { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
   .slide {
     min-height: 100vh;
     display: flex;
@@ -45,7 +42,6 @@
     padding: 80px 0;
     border-bottom: 1px solid var(--line);
     position: relative;
-    width: 100%;
   }
   .slide:last-child { border-bottom: none; }
 
@@ -77,9 +73,6 @@
     margin: 0 -9999px;
     padding-left: 9999px;
     padding-right: 9999px;
-    position: relative;
-    left: 0;
-    width: auto;
   }
   .cover-inner { max-width: 1100px; margin: 0 auto; padding: 0 24px; width: 100%; }
   .cover .badge {
@@ -115,6 +108,7 @@
     padding-top: 32px;
     border-top: 1px solid rgba(255,255,255,0.15);
   }
+  .cover-meta div { }
   .cover-meta .label {
     font-size: 11px;
     letter-spacing: 2px;
@@ -343,17 +337,6 @@
   /* reveal on load */
   .slide > * { animation: rise 0.7s ease both; }
   @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-  
-  /* ============ ANTI-SELECT & NO SCROLLBAR SPAM ============ */
-  body {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    overflow-y: auto;
-    overflow-x: hidden;
-  }
-  /* No funny messages, just silent protection */
 </style>
 </head>
 <body>
@@ -549,119 +532,5 @@
 
 <div class="deck-footer">CTIE Startup Profile Update — 2026 · System Build Report · Confidential to KLE-CTIE</div>
 
-<!-- Silent Protection: Disable Right-Click, F12, Copy, Dev Tools - No Popups or Messages -->
-<script>
-  (function() {
-    // Completely silent protection - no alerts, no console warnings, no funny messages
-    
-    // 1. Block context menu (right-click)
-    document.addEventListener('contextmenu', function(e) {
-      e.preventDefault();
-      return false;
-    });
-    
-    // 2. Block keyboard shortcuts (F12, DevTools combos, source view, save, print, copy/cut/paste)
-    document.addEventListener('keydown', function(e) {
-      // F12
-      if (e.key === 'F12' || e.keyCode === 123) {
-        e.preventDefault();
-        e.stopPropagation();
-        return false;
-      }
-      // Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C
-      if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C' || e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) {
-        e.preventDefault();
-        e.stopPropagation();
-        return false;
-      }
-      // Ctrl+U (View Source)
-      if ((e.ctrlKey || e.metaKey) && (e.key === 'u' || e.key === 'U' || e.keyCode === 85)) {
-        e.preventDefault();
-        e.stopPropagation();
-        return false;
-      }
-      // Ctrl+S (Save)
-      if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S' || e.keyCode === 83)) {
-        e.preventDefault();
-        e.stopPropagation();
-        return false;
-      }
-      // Ctrl+P (Print)
-      if ((e.ctrlKey || e.metaKey) && (e.key === 'p' || e.key === 'P' || e.keyCode === 80)) {
-        e.preventDefault();
-        e.stopPropagation();
-        return false;
-      }
-      // Ctrl+C (Copy)
-      if ((e.ctrlKey || e.metaKey) && (e.key === 'c' || e.key === 'C' || e.keyCode === 67)) {
-        e.preventDefault();
-        e.stopPropagation();
-        return false;
-      }
-      // Ctrl+X (Cut)
-      if ((e.ctrlKey || e.metaKey) && (e.key === 'x' || e.key === 'X' || e.keyCode === 88)) {
-        e.preventDefault();
-        e.stopPropagation();
-        return false;
-      }
-      // Ctrl+V (Paste)
-      if ((e.ctrlKey || e.metaKey) && (e.key === 'v' || e.key === 'V' || e.keyCode === 86)) {
-        e.preventDefault();
-        e.stopPropagation();
-        return false;
-      }
-      // PrintScreen key
-      if (e.key === 'PrintScreen' || e.keyCode === 44) {
-        e.preventDefault();
-        e.stopPropagation();
-        return false;
-      }
-    });
-    
-    // 3. Block copy/cut/paste events
-    document.addEventListener('copy', function(e) { e.preventDefault(); return false; });
-    document.addEventListener('cut', function(e) { e.preventDefault(); return false; });
-    document.addEventListener('paste', function(e) { e.preventDefault(); return false; });
-    
-    // 4. Disable drag selection / image drag
-    window.addEventListener('dragstart', function(e) { e.preventDefault(); return false; });
-    document.addEventListener('selectstart', function(e) { e.preventDefault(); return false; });
-    
-    // 5. Silent devtools detection - no messages, just prevent further interference
-    let devtoolsCheckCount = 0;
-    setInterval(function() {
-      try {
-        const start = performance.now();
-        debugger;
-        const end = performance.now();
-        if (end - start > 80 && devtoolsCheckCount < 3) {
-          devtoolsCheckCount++;
-          // Redirect console away without user messages
-          if (window.console && console.clear) console.clear();
-          // No alerts, no visible changes to UI
-        }
-      } catch(er) {}
-    }, 3000);
-    
-    // 6. Block beforeprint (print attempt)
-    window.addEventListener('beforeprint', function(e) {
-      e.preventDefault();
-      return false;
-    });
-    
-    // Ensure no funny popups or messages ever appear
-    window.onerror = function() { return true; };
-    
-    // Override console methods to prevent any potential logging of sensitive info (silent)
-    if (window.console) {
-      const noop = function(){};
-      if (console.log) console.log = noop;
-      if (console.warn) console.warn = noop;
-      if (console.error) console.error = noop;
-      if (console.info) console.info = noop;
-      if (console.debug) console.debug = noop;
-    }
-  })();
-</script>
 </body>
 </html>
